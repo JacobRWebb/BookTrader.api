@@ -1,22 +1,25 @@
 package main
 
 import (
-	"fmt"
 	"log"
+	"os"
 
 	"github.com/gofiber/fiber/v2"
-)
-
-const (
-	PORT = 3030
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	err := godotenv.Load()
+
+	if err != nil {
+		log.Fatal("Failed to load environment variables")
+	}
+
 	app := fiber.New()
 
 	app.Get("/", func (c *fiber.Ctx) error {
 		return c.SendString("Basic Route");
 	})
 
-	log.Fatal(app.Listen(fmt.Sprintf(":%d", PORT)))
+	log.Fatal(app.Listen(":"+os.Getenv("LISTEN_ADDR")))
 }
